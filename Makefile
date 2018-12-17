@@ -1,9 +1,8 @@
-.DEFAULT_GOAL := compile-run
-compile-run: compile run
+.DEFAULT_GOAL := build-run
+build:
+	./mvnw package
+build-run: clean build run
 clean:
-	rm -rf ./target
-compile: clean
-	mkdir -p ./target/classes
-	javac -d ./target/classes ./src/main/java/games/Slot.java
+	./mvnw clean
 run:
-	java -cp ./target/classes games.Slot
+	java -jar ./target/casino-1.0-SNAPSHOT-jar-with-dependencies.jar
