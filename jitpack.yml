@@ -1,5 +1,3 @@
 jdk:
   - oraclejdk11
-install:
-  - echo "Running a custom install command"
-  - ./mvnw clean install -DskipTests
+  
