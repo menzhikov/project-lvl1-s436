@@ -39,14 +39,12 @@
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-slf4j-impl</artifactId>
             <version>${log4j-slf4j-impl.version}</version>
-            <optional>true</optional>
         </dependency>
 
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-math3</artifactId>
             <version>${commons-math3.version}</version>
-            <optional>true</optional>
         </dependency>
 
     </dependencies>
