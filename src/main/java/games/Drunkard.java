@@ -1,20 +1,17 @@
 package games;
 
-import static org.apache.commons.math3.util.MathArrays.shuffle;
+class Drunkard {
 
-public class Drunkard {
-
-  private static final int PARS_TOTAL_COUNT = Par.values().length;
-  private static final int CARDS_TOTAL_COUNT = PARS_TOTAL_COUNT * Suit.values().length;
-
-  private static int[][] playersCards = new int[2][CARDS_TOTAL_COUNT];
+  private static int[][] playersCards = new int[2][CardUtils.CARDS_TOTAL_COUNT];
   private static int[] playersCardTails = new int[2];
   private static int[] playersCardHeads = new int[2];
+
+  private Drunkard() {}
 
   /**
    * main method.
    */
-  public static void main() {
+  static void main() {
     init();
     int iteration = 1;
 
@@ -23,9 +20,9 @@ public class Drunkard {
       int leftCard = getCardFromTop(0);
       int rightCard = getCardFromTop(1);
       System.out.println(String.format("Итерация №%d Игрок №1 карта: %s; игрок №2 карта: %s. ",
-          iteration, toString(leftCard), toString(rightCard)));
+          iteration, CardUtils.toString(leftCard), CardUtils.toString(rightCard)));
 
-      int result = compare(getPar(leftCard), getPar(rightCard));
+      int result = compare(CardUtils.getPar(leftCard), CardUtils.getPar(rightCard));
       if (result > 0) {
         addCardsToPlayerDeck(0, leftCard, rightCard);
         System.out.println("Выиграл игрок 1!");
@@ -54,11 +51,7 @@ public class Drunkard {
   }
 
   private static void init() {
-    int[] deck = new int[CARDS_TOTAL_COUNT];
-    for (int i = 0; i < deck.length; i++) {
-      deck[i] = i;
-    }
-    shuffle(deck);
+    int[] deck = CardUtils.getShaffledCards();
     for (int i = 0; i < playersCards.length; i++) {
       playersCardTails[i] = 0;
       playersCardHeads[i] = deck.length / 2;
@@ -85,11 +78,11 @@ public class Drunkard {
     return card;
   }
 
-  private static int compare(Par cardLeft, Par cardRight) {
-    if (cardLeft == Par.ACE && cardRight == Par.SIX) {
+  private static int compare(CardUtils.Par cardLeft, CardUtils.Par cardRight) {
+    if (cardLeft == CardUtils.Par.ACE && cardRight == CardUtils.Par.SIX) {
       return -1;
     }
-    if (cardLeft == Par.SIX && cardRight == Par.ACE) {
+    if (cardLeft == CardUtils.Par.SIX && cardRight == CardUtils.Par.ACE) {
       return 1;
     }
     return cardLeft.compareTo(cardRight);
@@ -104,46 +97,15 @@ public class Drunkard {
     return true;
   }
 
-  enum Suit {
-    SPADES, // пики
-    HEARTS, // червы
-    CLUBS, // трефы
-    DIAMONDS // бубны
-  }
-
-  enum Par {
-    SIX,
-    SEVEN,
-    EIGHT,
-    NINE,
-    TEN,
-    JACK, // Валет
-    QUEEN, // Дама
-    KING, // Король
-    ACE // Туз
-  }
-
-  private static Suit getSuit(int cardNumber) {
-    return Suit.values()[cardNumber / PARS_TOTAL_COUNT];
-  }
-
-  private static Par getPar(int cardNumber) {
-    return Par.values()[cardNumber % PARS_TOTAL_COUNT];
-  }
-
-  private static String toString(int cardNumber) {
-    return getPar(cardNumber) + " " + getSuit(cardNumber);
-  }
-
   private static int incrementIndex(int index) {
-    return (index + 1) % CARDS_TOTAL_COUNT;
+    return (index + 1) % CardUtils.CARDS_TOTAL_COUNT;
   }
 
   private static int getPlayerDeckSize(int playerIndex) {
     int tail = playersCardTails[playerIndex];
     int head = playersCardHeads[playerIndex];
     if (head < tail) {
-      head += CARDS_TOTAL_COUNT;
+      head += CardUtils.CARDS_TOTAL_COUNT;
     }
     return head - tail;
   }

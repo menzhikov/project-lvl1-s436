@@ -3,7 +3,7 @@ package games;
 import static java.lang.Math.random;
 import static java.lang.Math.round;
 
-public class Slot {
+class Slot {
 
   private Slot() {
   }
@@ -11,7 +11,7 @@ public class Slot {
   /**
    * Entry point.
    */
-  public static void main() {
+  static void main() {
     final int size = 7;
     final int bet = 10;
     final int prize = 1_000;
