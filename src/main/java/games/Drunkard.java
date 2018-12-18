@@ -1,7 +1,11 @@
 package games;
 
+import org.slf4j.Logger;
+
 class Drunkard {
 
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(Drunkard.class);
+  
   private static int[][] playersCards = new int[2][CardUtils.CARDS_TOTAL_COUNT];
   private static int[] playersCardTails = new int[2];
   private static int[] playersCardHeads = new int[2];
@@ -19,31 +23,33 @@ class Drunkard {
 
       int leftCard = getCardFromTop(0);
       int rightCard = getCardFromTop(1);
-      System.out.println(String.format("Итерация №%d Игрок №1 карта: %s; игрок №2 карта: %s. ",
-          iteration, CardUtils.toString(leftCard), CardUtils.toString(rightCard)));
+      String leftCardName = CardUtils.toString(leftCard);
+      String rightCardName = CardUtils.toString(rightCard);
+      log.info("Итерация №{} Игрок №1 карта: {}; игрок №2 карта: {}. ",
+          iteration, leftCardName, rightCardName);
 
       int result = compare(CardUtils.getPar(leftCard), CardUtils.getPar(rightCard));
       if (result > 0) {
         addCardsToPlayerDeck(0, leftCard, rightCard);
-        System.out.println("Выиграл игрок 1!");
+        log.info("Выиграл игрок 1!");
       } else if (result < 0) {
         addCardsToPlayerDeck(1, leftCard, rightCard);
-        System.out.println("Выиграл игрок 2!");
+        log.info("Выиграл игрок 2!");
       } else {
         addCardsToPlayerDeck(0, leftCard);
         addCardsToPlayerDeck(1, rightCard);
-        System.out.println("Спор - каждый остаётся при своих!");
+        log.info("Спор - каждый остаётся при своих!");
       }
 
       if (result > 0 && getPlayerDeckSize(1) == 0) {
-        System.out.println(String.format("У игрока №1 36 карт, у игрока №2 0 карт%n"
-            + "Выиграл первый игрок! Количество произведённых итераций: %d.", iteration));
+        log.info("У игрока №1 36 карт, у игрока №2 0 карт\n"
+            + "Выиграл первый игрок! Количество произведённых итераций: {}.", iteration);
       } else if (result < 0 && getPlayerDeckSize(0) == 0) {
-        System.out.println(String.format("У игрока №1 0 карт, у игрока №2 36 карт%n"
-            + "Выиграл второй игрок! Количество произведённых итераций: %d.", iteration));
+        log.info("У игрока №1 0 карт, у игрока №2 36 карт\n"
+            + "Выиграл второй игрок! Количество произведённых итераций: {}.", iteration);
       } else {
-        System.out.println(String.format("У игрока №1 %d карт, у игрока №2 %d карт",
-            getPlayerDeckSize(0), getPlayerDeckSize(1)));
+        log.info("У игрока №1 {} карт, у игрока №2 {} карт",
+            getPlayerDeckSize(0), getPlayerDeckSize(1));
         iteration++;
       }
 

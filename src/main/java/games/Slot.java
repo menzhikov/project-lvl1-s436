@@ -1,9 +1,12 @@
 package games;
 
-import static java.lang.Math.random;
-import static java.lang.Math.round;
+import org.slf4j.Logger;
+
+import java.util.Random;
 
 class Slot {
+
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(Slot.class);
 
   private Slot() {
   }
@@ -20,23 +23,24 @@ class Slot {
     int firstCounter = 0;
     int secondCounter = 0;
     int thirdCounter = 0;
+    Random r = new Random();
 
     while (cash > 0) {
-      System.out.println(String.format("У Вас %d$, ставка - %d$", cash, bet));
-      System.out.println("Крутим барабаны! Розыгрыш принёс следующие результаты:");
-      firstCounter = (firstCounter + (int) round(random() * 100)) % size;
-      secondCounter = (secondCounter + (int) round(random() * 100)) % size;
-      thirdCounter = (thirdCounter + (int) round(random() * 100)) % size;
-      System.out.println(String.format("первый барабан - %d, второй - %d, третий - %d",
-          firstCounter, secondCounter, thirdCounter));
+      log.info("У Вас {}$, ставка - {}$", cash, bet);
+      log.info("Крутим барабаны! Розыгрыш принёс следующие результаты:");
+      firstCounter = (firstCounter + r.nextInt(100)) % size;
+      secondCounter = (secondCounter + r.nextInt(100)) % size;
+      thirdCounter = (thirdCounter + r.nextInt(100)) % size;
+      log.info("первый барабан - {}, второй - {}, третий - {}",
+          firstCounter, secondCounter, thirdCounter);
       if (firstCounter == secondCounter && secondCounter == thirdCounter) {
         cash += prize;
-        System.out.println(String.format("Проигрыш %d$, ваш капитал теперь составляет: %d$",
-            prize, cash));
+        log.info("Проигрыш {}$, ваш капитал теперь составляет: {}$",
+            prize, cash);
       } else {
         cash -= bet;
-        System.out.println(String.format("Выигрыш %d$, ваш капитал теперь составляет: %d$",
-            bet, cash));
+        log.info("Выигрыш {}$, ваш капитал теперь составляет: {}$",
+            bet, cash);
       }
     }
 

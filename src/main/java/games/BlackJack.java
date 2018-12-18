@@ -1,13 +1,17 @@
 package games;
 
+import org.slf4j.Logger;
+
 import java.io.IOException;
 
 import static games.Choice.getCharacterFromUser;
 
 class BlackJack {
 
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(BlackJack.class);
   private static final int MAX_VALUE = 21;
   private static final int MAX_CARDS_COUNT = 8;
+
   private static int[] cards; // Основная колода
   private static int cursor; // Счётчик карт основной колоды
 
@@ -26,7 +30,7 @@ class BlackJack {
       initRound();
       addCard2Player(0);
       addCard2Player(0);
-      while (sum(0) < 20 && confirm("Берём ещё?")) {
+      while (sum(0) < 20 && confirm()) {
         addCard2Player(0);
       }
 
@@ -38,8 +42,7 @@ class BlackJack {
 
       int playerSum = getFinalSum(0);
       int computerSum = getFinalSum(1);
-      System.out.println(String.format("Сумма ваших очков - %d, компьютера - %d",
-          playerSum, computerSum));
+      log.info("Сумма ваших очков - {}, компьютера - {}", playerSum, computerSum);
       if (playerSum > computerSum) {
         playersMoney[0] += 10;
         playersMoney[1] -= 10;
@@ -50,15 +53,15 @@ class BlackJack {
     }
 
     if (playersMoney[0] > 0) {
-      System.out.println("Вы выиграли! Поздравляем!");
+      log.info("Вы выиграли! Поздравляем!");
     } else {
-      System.out.println("Вы проиграли. Соболезнуем...");
+      log.info("Вы проиграли. Соболезнуем...");
     }
   }
 
   private static void initRound() {
-    System.out.println("\nУ Вас " + playersMoney[0] + "$, у компьютера - " + playersMoney[1]
-        + "$. Начинаем новый раунд!");
+    log.info("\nУ Вас {}$, у компьютера - {}$. Начинаем новый раунд!",
+        playersMoney[0], playersMoney[1]);
     cards = CardUtils.getShaffledCards();
     playersCards = new int[2][MAX_CARDS_COUNT];
     playersCursors = new int[] {0, 0};
@@ -69,12 +72,13 @@ class BlackJack {
     int card = cards[cursor++];
     String msg;
     if (player == 0) {
-      msg = "Вам выпала карта ";
+      msg = "Вам выпала карта {}";
     } else {
-      msg = playersCursors[1] > 1 ? "Компьютер решил взять ещё и ему выпала карта "
-          : "Компьютеру выпала карта ";
+      msg = playersCursors[1] > 1 ? "Компьютер решил взять ещё и ему выпала карта {}"
+          : "Компьютеру выпала карта {}";
     }
-    System.out.println(msg + CardUtils.toString(card));
+    String cardName = CardUtils.toString(card);
+    log.info(msg, cardName);
     playersCards[player][playersCursors[player]++] = card;
   }
 
@@ -91,8 +95,8 @@ class BlackJack {
     return score > MAX_VALUE ? 0 : score;
   }
 
-  private static boolean confirm(String message) throws IOException {
-    System.out.println(message + " \"Y\" - Да, {любой другой символ} - нет "
+  private static boolean confirm() throws IOException {
+    log.info("Берём ещё? \"Y\" - Да, {любой другой символ} - нет "
         + "(Что бы выйти из игры, нажмите Ctrl + C)");
     switch (getCharacterFromUser()) {
       case 'Y':
