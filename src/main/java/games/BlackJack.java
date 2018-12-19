@@ -28,14 +28,12 @@ class BlackJack {
   static void main() throws IOException {
     while (playersMoney[0] > 0 && playersMoney[1] > 0) {
       initRound();
-      addCard2Player(0);
-      addCard2Player(0);
+      addCard2PlayerNTimes(0, 2);
       while (sum(0) < 20 && confirm()) {
         addCard2Player(0);
       }
 
-      addCard2Player(1);
-      addCard2Player(1);
+      addCard2PlayerNTimes(1, 2);
       while (sum(1) < 17) {
         addCard2Player(1);
       }
@@ -56,6 +54,12 @@ class BlackJack {
       log.info("Вы выиграли! Поздравляем!");
     } else {
       log.info("Вы проиграли. Соболезнуем...");
+    }
+  }
+
+  private static void addCard2PlayerNTimes(int player, int times) {
+    while (times-- > 0) {
+      addCard2Player(player);
     }
   }
 
