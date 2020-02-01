@@ -20,7 +20,7 @@
         <!--Libs-->
         <log4j-slf4j-impl.version>2.11.1</log4j-slf4j-impl.version>
         <commons-math3.version>3.6.1</commons-math3.version>
-        <checkstyle.latest.version>8.18</checkstyle.latest.version>
+        <checkstyle.latest.version>8.29</checkstyle.latest.version>
         <!--Plugins-->
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
         <maven-assembly-plugin.version>3.1.0</maven-assembly-plugin.version>
